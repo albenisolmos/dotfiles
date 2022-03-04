@@ -1,0 +1,176 @@
+let g:polyglot_disabled = ['autoindent', 'html', 'vim']
+
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-fugitive'
+Plug 'Raimondi/delimitMate'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'mattn/emmet-vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'sainnhe/gruvbox-material'
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'amix/open_file_under_cursor.vim'
+Plug 'kshenoy/vim-signature'
+Plug 'dylnmc/synstack.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'jlanzarotta/bufexplorer'
+
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
+if has('nvim')
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind-nvim'
+
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'rafamadriz/friendly-snippets'
+endif
+call plug#end()
+
+set termguicolors
+set bg=dark
+colorscheme olimpo 
+syntax on
+set lazyredraw
+set autochdir
+set title
+set titlestring=%t\ \-\ Vim
+set number
+set numberwidth=3
+set cursorline
+set showtabline=1
+set winwidth=10
+set nohidden
+" Tabs & Spaces
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+set noexpandtab
+" Text
+set linespace=4
+set autoindent
+set wrap
+set linebreak
+set breakindent
+set showbreak=↳\  
+set list
+set listchars=tab:\│\ ,trail:· 
+set fillchars+=vert:\│ 
+" Fold
+set foldmethod=syntax
+set nofoldenable
+set foldlevel=1
+set fillchars+=fold:\ 
+" Seaching + Regex
+set incsearch
+set hlsearch
+" Backup & Undo
+set undodir=/tmp//
+" Splitting
+set splitright
+set splitbelow
+" Auto-completion
+set completeopt=menuone,noinsert,longest,preview
+set wildignore+=**/node_modules/**
+set wildmode=longest:full,full
+" Status Bar
+set noshowmode
+set ruler
+set rulerformat=%#LineNr#%{toupper(g:currentmode[mode()])}
+set rulerformat+=\ %(\ %M\ %)%(\ %R\ %)%(\ %H\ %)
+set rulerformat+=%=≡\ %L:%l
+set laststatus=2
+set statusline=%#User1#%{IsCurrentWindow()}\ %* 
+set statusline+=\ %#User2#%t%*
+set statusline+=%=
+set statusline+=%3*%{fugitive#statusline()}
+set statusline+=\ %3*│%#StatuslineNc#\ %{fnamemodify(getcwd(),':t')}\ %3*│%#StatuslineNc#
+set statusline+=\ %{toupper(g:currentmode[mode()])}
+set statusline+=%(\ %R%)%(\ %H%)
+set statusline+=\ %3*│%#StatuslineNc#\ %p%%\ \≡\ %L:%l\ 
+" nose
+set scrolloff=5
+set mouse=a
+set shortmess+=c
+set belloff+=ctrlg
+set ttyfast
+set wildmenu
+set clipboard=unnamedplus
+
+if !has('nvim')
+	set ttymouse=xterm2
+endif
+
+"
+" Let
+"
+
+" Shape of cursor
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+" Vim JS Template
+let g:htl_css_templates = 1
+let g:htl_all_templates = 1
+" Emmet
+let g:user_emmet_install_global = 0
+let g:user_emmet_leader_key = '<C-a>'
+" Ale
+let g:ale_sign_error = 'x'
+let g:ale_sign_warning = '!'
+" Gitgutter
+let g:gitgutter_sign_added = '│'
+let g:gitgutter_sign_removed = '│'
+" BufExplore
+let g:bufExplorerHelp=0
+let g:bufExplorerSortBy='mru'
+let g:bufRxplorerShowRelativePath=1
+
+"
+" Highliht 
+"
+hi User1 ctermfg=236 ctermbg=236 
+execute 'hi User1 guifg=#228ae7 guibg=' . '#000000'
+execute 'hi User2 guifg=#228ae7 guibg=' . g:olmos_statusline_bg
+execute 'hi User3 guifg=#353535 guibg=' . g:olmos_statusline_bg
+hi GitGutterAdd    guifg=#009900 ctermfg=2
+hi GitGutterChange guifg=#bbbb00 ctermfg=3
+hi GitGutterDelete guifg=#ff2222 ctermfg=1
+
+"
+" Commands
+"
+command Q :q
+command Py :!clear; python %
+command Lua :!clear; lua %
+command Cpp :!clear; g++ % -o %< 
+command -nargs=? Run call RunFunc(<f-args>)
+
+"
+" AutoCMD
+"
+augroup FancyStatusline
+	autocmd WinLeave * call setwinvar(winnr(), 'curr', 0)
+	autocmd WinEnter * call setwinvar(winnr(), 'curr', 1)
+augroup end
+
+augroup Others
+	autocmd FileType js let b:vimpipe_command="node"
+	autocmd BufRead,BufNewFile *.olmos set filetype=olmos
+	autocmd filetype html setlocal foldmethod=indent
+	autocmd FileType html,css,javascript,js EmmetInstall
+augroup end 
+
+" Maps & Functions
+source ~/.vim/maps.vim
+source ~/.vim/functions.vim
+if has('nvim')
+	luafile ~/.config/nvim/lua/init.lua
+endif

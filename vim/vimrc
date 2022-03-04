@@ -132,7 +132,29 @@ let g:gitgutter_sign_removed = '│'
 let g:bufExplorerHelp=0
 let g:bufExplorerSortBy='mru'
 let g:bufRxplorerShowRelativePath=1
-
+let g:nvim_tree_icons = {
+	\ 'default': '',
+	\ 'symlink': '',
+	\ 'git': {
+		\ 'unstaged': "✗",
+		\ 'staged': "✓",
+		\ 'unmerged': "",
+		\ 'renamed': "➜",
+		\ 'untracked': "★",
+		\ 'deleted': "",
+		\ 'ignored': "◌"
+		\ },
+	\ 'folder': {
+		\ 'arrow_open': "",
+		\ 'arrow_closed': "",
+		\ 'default': "",
+		\ 'open': "",
+		\ 'empty': "",
+		\ 'empty_open': "",
+		\ 'symlink': "",
+		\ 'symlink_open': ""
+	\ }
+\ }
 "
 " Highliht 
 "
@@ -143,6 +165,8 @@ execute 'hi User3 guifg=#353535 guibg=' . g:olmos_statusline_bg
 hi GitGutterAdd    guifg=#009900 ctermfg=2
 hi GitGutterChange guifg=#bbbb00 ctermfg=3
 hi GitGutterDelete guifg=#ff2222 ctermfg=1
+hi NvimTreeCursorLine guibg=#303030
+hi NvimTreeRootFolder guifg=#999999
 
 "
 " Commands

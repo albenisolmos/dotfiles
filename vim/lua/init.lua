@@ -3,6 +3,7 @@ local servers = {'clangd', 'pyright', 'tsserver'}
 require('cmp-setup')
 require('lsp-setup')(servers)
 require('nvim-tree').setup {
+	auto_close = true,
 	filters = {
 		dotfiles = true
 	}

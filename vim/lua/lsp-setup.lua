@@ -1,9 +1,8 @@
 local lspconfig = require('lspconfig')
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').update_capabilities(
+		vim.lsp.protocol.make_client_capabilities())
 
 local opts = { noremap = true, silent = true } -- Mappings.
---local lsp_install_dir = vim.fn.stdpath("data")..'/'.."lsp_servers"
---local sumneko_binary = lsp_install_dir .. "/sumneko_lua/bin/lua-language-server"
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
@@ -18,26 +17,19 @@ local function on_attach(_, bufnr)
 		vim.api.nvim_buf_set_option(bufnr, ...)
 	end
 
-	-- Enable completion triggered by <c-x><c-o>
 	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-	buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+	buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	buf_set_keymap('n', '<Space>lh', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-	buf_set_keymap('n', '_wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-	buf_set_keymap('n', '_wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-	buf_set_keymap('n', '_wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-	buf_set_keymap('n', '_D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-	buf_set_keymap('n', '_rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-	buf_set_keymap('n', '_ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 	buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-	buf_set_keymap('n', '_e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-	buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-	buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-	buf_set_keymap('n', '_q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-	buf_set_keymap('n', '_f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+	buf_set_keymap('n', 'Lh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+	buf_set_keymap('n', 'LH', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+	buf_set_keymap('n', 'Lr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+	buf_set_keymap('n', 'Lc', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+	buf_set_keymap('n', 'D', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+	buf_set_keymap('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+	buf_set_keymap('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+	buf_set_keymap('n', 'dl', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 end
 
 return function(servers)
@@ -45,7 +37,6 @@ return function(servers)
 		lspconfig[lsp].setup {
 			on_attach = on_attach,
 			capabilities = capabilities,
-			--cmd = { install_root_dir },
 			flags = {
 				debounce_text_changes = 150,
 			}
@@ -65,9 +56,7 @@ return function(servers)
 		settings = {
 			Lua = {
 				runtime = {
-					-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
 					version = '5.3',
-					-- Setup your lua path
 					path = runtime_path,
 				},
 				diagnostics = {
@@ -78,7 +67,7 @@ return function(servers)
 					-- Make the server aware of Neovim runtime files
 					library = vim.api.nvim_get_runtime_file("", true),
 				},
-				telemetry = { enable = false },
+				telemetry = { enable = true }
 			}
 		}
 	}

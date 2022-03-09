@@ -1,5 +1,6 @@
 let mapleader = ' '
 
+nmap q <nop>
 nmap <space> <nop>
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
@@ -15,28 +16,28 @@ nmap <silent> <leader>q :q<cr>
 nmap <silent> <leader>x :x<cr>
 
 " Resize buffer
-nmap <leader>< 10<c-w><
-nmap <leader>> 10<c-w>>
-nmap - 10<c-w><
-nmap _ 10<c-w>>
-
+nmap - <c-w>5<
+nmap _ <c-w>5>
+nmap + <c-w>5+
+nmap * <c-w>5-
 " Split Buffer
 nmap <silent> <leader>z :vsp<cr>
 nmap <silent> <leader>x :split<cr>
-
+" Telescope
+nnoremap ff <cmd>Telescope find_files<cr>
+nnoremap B <cmd>Telescope buffers<cr>
+nnoremap fh <cmd>Telescope help_tags<cr>
 " Toggle
-nmap <silent> <leader>b :ToggleBufExplorer<cr>
+nmap <silent> F :NvimTreeToggle<cr>
 nmap <silent> <leader>W :WriterMode<cr>
-nmap <silent> <leader>l :TagbarToggle<cr>
 nmap <silent> <leader>h :nohlsearch<cr>
 " Varius
 inoremap <C-o> <Esc>o
-nmap B viw
+nmap vg viw
 vmap <leader>y "+y
 vmap <leader>p "+p
 nmap <leader>g gg=G''
 inoremap <c-d> <Esc>diwi
-nnoremap <leader>B :buffers<cr>:buffer<space> 
 vmap <leader>r :s////g<left><left><backspace><left>
 nmap <silent> <leader>v :so $MYVIMRC<cr>
 nmap ! :!

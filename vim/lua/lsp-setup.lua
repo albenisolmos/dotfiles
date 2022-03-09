@@ -1,9 +1,7 @@
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').update_capabilities(
 		vim.lsp.protocol.make_client_capabilities())
-
 local opts = { noremap = true, silent = true } -- Mappings.
-
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
@@ -35,6 +33,7 @@ end
 return function(servers)
 	for _, lsp in ipairs(servers) do
 		lspconfig[lsp].setup {
+			autostart = false,
 			on_attach = on_attach,
 			capabilities = capabilities,
 			flags = {
@@ -45,6 +44,7 @@ return function(servers)
 
 	lspconfig.sumneko_lua.setup {
 		on_attach = on_attach,
+		autostart = false,
 		capabilities = capabilities,
 		flags = {
 			debounce_text_changes = 150,
@@ -60,6 +60,7 @@ return function(servers)
 					path = runtime_path,
 				},
 				diagnostics = {
+					virtual_text = false,
 					-- Get the language server to recognize the `vim` global
 					globals = {'vim'},
 				},

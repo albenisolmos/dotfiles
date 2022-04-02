@@ -1,0 +1,5 @@
+[main]
+items=org.gnome.Nautilus;chromium;galculator;libreoffice-startcenter;xfce4-terminal
+auto_hide=true
+position=bottom
+launcher=false

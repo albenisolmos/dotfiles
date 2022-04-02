@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+#define OL_MODULE_CHECK_SYMBOL(symbol, callback) \
+		if (symbol != NULL) { \
+			callback; \
+		}
+
+
+void test(char *a) {
+	printf(a);
+}
+
+int main() {
+	OL_MODULE_CHECK_SYMBOL(NULL, test("hola comostast1"));
+	OL_MODULE_CHECK_SYMBOL(100, test("hola comostast2"));
+	return 0;
+}

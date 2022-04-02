@@ -1,0 +1,37 @@
+#include <stdlib.h>
+#include <gtk/gtk.h>
+#include <olmosui/ol_window.h>
+
+#include "utils.h"
+#include "item.h"
+
+static void on_activate(GtkApplication*, gpointer);
+
+int main(int argc, char *argv[])
+{
+	GtkApplication *app = gtk_application_new("olmos.runner", G_APPLICATION_FLAGS_NONE);
+	g_signal_connect(app, "activate", G_CALLBACK(on_activate), NULL);
+	int status = g_application_run(G_APPLICATION(app), argc, argv);
+
+	g_object_unref(app);
+	return status;
+}
+
+static void on_activate(GtkApplication *app, gpointer data) {
+	GtkWidget *window, *hbox, *separator, *launcher;
+
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	separator = gtk_separator_new(GTK_ORIENTATION_VERTICAL);
+	launcher = dock_item_new("Launcher", "system-run", "rofi -show drun");
+	gtk_container_add(GTK_CONTAINER(hbox), launcher);
+	gtk_container_add(GTK_CONTAINER(hbox), separator);
+	remember_items(hbox);
+
+	window = gtk_application_window_new(app);
+	gtk_widget_set_name(window, "OlmosDock");
+	ol_window_setup_alpha(GTK_WINDOW(window));
+	ol_window_setup_desktop_component(GTK_WINDOW(window));
+	gtk_container_add(GTK_CONTAINER(window), hbox);
+	gtk_widget_show_all(window);
+}
+

@@ -1,0 +1,28 @@
+if {expr} {block}
+else {block}
+match {val} {block}
+
+// Examples
+fn get_biggest(a: int, b: int, c: int = 0) {
+	return if a > b && a > c -> a
+		elseif b > a && b > c  -> b
+		elseif c > b && c > a -> c
+}
+
+fn is_good_resolution(resolution: int) {
+	return match resolution {
+		1080 -> 'it\'s full hd'
+		720 -> 'it\'s hd'
+		420 -> 'it\'s aceptable'
+		(* < 420) -> 'looks ugly'
+		* -> Error('Invalid resolution')
+	}
+}
+
+fn color_for_mood(mood: str)
+	match mood {
+		'angry': set_color('red')
+		'sick': set_color('green')
+		* -> Error('Unknow Mood')
+	}
+}

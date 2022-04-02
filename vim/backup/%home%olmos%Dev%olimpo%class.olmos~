@@ -1,0 +1,57 @@
+class Persona {
+	new() {}
+
+	new(name: str, age: int) {
+		self.new(name);
+		self.age = age
+	}
+
+	new(name: str) {
+		self.name = name
+	}
+
+	name(self) {
+		return self.name
+	}
+
+	name(self, name) {
+		self.name = name
+	}
+
+	age(self, value: int) {
+		self.age = value
+	}
+
+	age(self) {
+		return self.age
+	}
+
+	private:
+		age: int
+		name: str 
+}
+
+class Hero(Persona) {
+	new(name: str) {
+		super(name)
+	}
+
+	new(name: str, age: int) {
+		super(name, age)
+	}
+
+	add_ability(ability_name: str, ability: fn) {
+		self.abilities[ability_name] = fn 
+	}
+
+	private abilities: array
+	private strength: int = 10
+}
+
+// implementation of a hero who can increase his own strength
+{
+	const hero = Hero('un_loco')
+	hero.add_ability('increase-strength', fn(self) {
+		self.strength += 10
+	})
+}

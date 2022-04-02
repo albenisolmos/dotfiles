@@ -1,0 +1,42 @@
+#include <gtk/gtk.h>
+
+/*
+	GtkTargetEntry target_entries[]={
+		{"text/html", 0, TEXT_HTML},
+		{"STRING", 0, STRING},
+		{"number", 0, NUMBER},
+		{"image/jpeg", 0, IMAGE_JPEG},
+		{"text/uri−list", 0, TEXT_URI}
+	};
+*/
+
+typedef enum {
+	DRAG_BEGIN,
+	DRAG_END,
+	DRAG_DATA_GET,
+} olDNDSignal;
+
+void ol_draggable_setup_source(GtkWidget *source_widget, GtkTargetEntry *target_entries, olDNDSignal signal)
+{
+
+	/* Make this drag source offering all of the targets list above */
+	gtk_drag_source_set(source_widget,
+			GDK_BUTTON1_MASK,
+			target_entries,
+			G_N_ELEMENTS(target_entries),
+			GDK_ACTION_COPY | GDK_ACTION_MOVE);
+
+	/* Connect it to all signals that the source should handle.*/
+	g_signal_connect(G_OBJECT(source_widget),
+			"drag_begin",
+			G_CALLBACK(on_drag_begin),
+			NULL);
+	g_signal_connect(G_OBJECT(source_widget),
+			"drag_data_get",
+			G_CALLBACK(on_drag_data_get),
+			NULL);
+	g_signal_connect(G_OBJECT(source_widget),
+			"drag_end",
+			G_CALLBACK(on_drag_end),
+			NULL);
+}

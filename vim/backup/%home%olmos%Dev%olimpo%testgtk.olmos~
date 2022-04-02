@@ -1,0 +1,20 @@
+import Gtk
+
+fn main() {
+	let button1 = Gtk.ToggleButton('the button 1')
+		| onclick = fn() print('button1 clicked')
+	let button2 = Gtk.ToggleButton('the button 2')
+		| onclick = fn() print('button2 clicked') 
+
+	Gtk::BuilderUI({
+		Gtk::Box {
+			Gtk.ButtonBox {
+				button1,
+				button2
+			},
+			Gtk.Notebook,
+			orientation = 'vetical'
+			spacing = 10
+		}
+	})
+}

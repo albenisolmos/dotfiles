@@ -1,0 +1,10 @@
+vim/plugged
+vim/samples
+vim/colors
+vim/doc
+vim/spell
+vim/autoload
+vim/backupdir
+vim/swap
+ranger/plugins
+vim/backup/*

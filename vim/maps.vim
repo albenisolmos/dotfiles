@@ -23,12 +23,17 @@ nmap * <c-w>5-
 " Split Buffer
 nmap <silent> <leader>z :vsp<cr>
 nmap <silent> <leader>x :split<cr>
+" Harpoon
+nmap <leader>m <cmd>lua require("harpoon.mark").add_file()<cr>
+nmap <leader>M <cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>
 " Telescope
 nnoremap ff <cmd>Telescope find_files<cr>
+nnoremap fF <cmd>lua require('utils').telescope_project_search()<cr>
 nnoremap B <cmd>Telescope buffers<cr>
-nnoremap fh <cmd>Telescope help_tags<cr>
+nnoremap tp <cmd>lua require('telescope').extensions.project.project({})<cr>
 " Toggle
-nmap <silent> F :NvimTreeToggle<cr>
+nmap <silent> <leader>f :NvimTreeCToggle<cr>
+nmap <silent> F :Telescope file_browser<cr>
 nmap <silent> <leader>W :WriterMode<cr>
 nmap <silent> <leader>h :nohlsearch<cr>
 " Varius
@@ -46,6 +51,7 @@ tmap <Esc> <C-w>N
 nmap <leader>S :%s//g<LEFT><LEFT>
 nmap <leader>s :s//g<LEFT><LEFT>
 inoremap <C-delete> <esc><right>dwi
+nmap <leader>* /<c-r>=expand("<cword>")<CR><CR>N
 
 " Insert around word
 nmap S <nop>
@@ -64,5 +70,3 @@ vmap S{ c{}<esc>P
 vmap S( c()<esc>P
 vmap S" c""<esc>P
 vmap S' c''<esc>P
-
-nmap <leader>ld :lua vim.diagnostic.disable()<cr>

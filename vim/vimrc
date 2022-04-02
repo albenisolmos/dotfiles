@@ -1,37 +1,42 @@
-let g:polyglot_disabled = ['autoindent', 'html', 'vim']
-
 call plug#begin('~/.vim/plugged')
+" Local
+Plug '~/Dev/vim-plugins/lets-start'
+Plug '~/Dev/vim-plugins/nvim-tree-config'
+" Depencies
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lua/plenary.nvim'
+"Varius
+Plug 'JMcKiern/vim-venter'
 Plug 'tpope/vim-fugitive'
 Plug 'Raimondi/delimitMate'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'javascript']}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'sainnhe/gruvbox-material'
-Plug 'lifepillar/vim-gruvbox8'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'kshenoy/vim-signature'
-Plug 'dylnmc/synstack.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'jlanzarotta/bufexplorer'
-
-Plug 'kyazdani42/nvim-web-devicons' " for file icons
-Plug 'kyazdani42/nvim-tree.lua'
-
-if has('nvim')
+Plug 'ThePrimeagen/harpoon'
+" Schemes
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'sainnhe/gruvbox-material'
+" Telescope
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-project.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+" LSP
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
-
+Plug 'onsails/lspkind-nvim'
+" CMP
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'onsails/lspkind-nvim'
-
+" Snip
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rafamadriz/friendly-snippets'
-endif
 call plug#end()
 
 set termguicolors
@@ -59,7 +64,7 @@ set autoindent
 set wrap
 set linebreak
 set breakindent
-set showbreak=↳\  
+set showbreak=↳\ 
 set list
 set listchars=tab:\│\ ,trail:· 
 set fillchars+=vert:\│ 
@@ -72,7 +77,10 @@ set fillchars+=fold:\
 set incsearch
 set hlsearch
 " Backup & Undo
-set undodir=/tmp//
+set swapfile
+set backup
+set backupdir=~/.config/nvim/backup//
+set writebackup
 " Splitting
 set splitright
 set splitbelow
@@ -90,7 +98,7 @@ set laststatus=2
 set statusline=%#User1#%{IsCurrentWindow()}\ %* 
 set statusline+=\ %#User2#%t%*
 set statusline+=%=
-set statusline+=%3*%{fugitive#statusline()}
+set statusline+=%#StatuslineNc#\ %{fugitive#statusline()}
 set statusline+=\ %3*│%#StatuslineNc#\ %{fnamemodify(getcwd(),':t')}\ %3*│%#StatuslineNc#
 set statusline+=\ %{toupper(g:currentmode[mode()])}
 set statusline+=%(\ %R%)%(\ %H%)
@@ -116,6 +124,7 @@ endif
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
+let g:venter_disable_vertsplit = v:true
 " Vim JS Template
 let g:htl_css_templates = 1
 let g:htl_all_templates = 1
@@ -128,10 +137,7 @@ let g:ale_sign_warning = '!'
 " Gitgutter
 let g:gitgutter_sign_added = '│'
 let g:gitgutter_sign_removed = '│'
-" BufExplore
-let g:bufExplorerHelp=0
-let g:bufExplorerSortBy='mru'
-let g:bufRxplorerShowRelativePath=1
+let g:lets_start_cmd_file_explorer = 'NvimTreeVinegar'
 let g:nvim_tree_icons = {
 	\ 'default': '',
 	\ 'symlink': '',
@@ -155,28 +161,21 @@ let g:nvim_tree_icons = {
 		\ 'symlink_open': ""
 	\ }
 \ }
+
 "
-" Highliht 
+" Highlight
 "
-hi User1 ctermfg=236 ctermbg=236 
-execute 'hi User1 guifg=#228ae7 guibg=' . '#000000'
+hi User1 guifg=#228ae7 guibg=#000000 ctermfg=236 ctermbg=236 
 execute 'hi User2 guifg=#228ae7 guibg=' . g:olmos_statusline_bg
 execute 'hi User3 guifg=#353535 guibg=' . g:olmos_statusline_bg
 hi GitGutterAdd    guifg=#009900 ctermfg=2
 hi GitGutterChange guifg=#bbbb00 ctermfg=3
 hi GitGutterDelete guifg=#ff2222 ctermfg=1
-hi NvimTreeCursorLine guibg=#303030
-hi NvimTreeRootFolder guifg=#999999
-
 "
 " Commands
 "
 command Q :q
-command Py :!clear; python %
-command Lua :!clear; lua %
-command Cpp :!clear; g++ % -o %< 
-command -nargs=? Run call RunFunc(<f-args>)
-
+command W :w
 "
 " AutoCMD
 "
@@ -187,14 +186,11 @@ augroup end
 
 augroup Others
 	autocmd FileType js let b:vimpipe_command="node"
-	autocmd BufRead,BufNewFile *.olmos set filetype=olmos
+	autocmd BufRead,BufNewFile *.ol set filetype=olmos
 	autocmd filetype html setlocal foldmethod=indent
-	autocmd FileType html,css,javascript,js EmmetInstall
 augroup end 
 
-" Maps & Functions
+" Other
 source ~/.vim/maps.vim
 source ~/.vim/functions.vim
-if has('nvim')
-	luafile ~/.config/nvim/lua/init.lua
-endif
+luafile ~/.vim/lua/init.lua

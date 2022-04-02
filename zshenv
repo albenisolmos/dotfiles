@@ -13,6 +13,8 @@ export COLORTERM=truecolor
 export KEYTIMEOUT=1
 export WWW_HOME="http://duckduckgo.com"
 export GTK_OVERLAY_SCROLLING=0
+export VIM="/usr/local/share/nvim"
+export VIMRUNTIME="$VIM/runtime"
 #export QT_STYLE_OVERIDE=GTK+
 
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then

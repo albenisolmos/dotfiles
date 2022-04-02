@@ -7,3 +7,4 @@ vim/autoload
 vim/backupdir
 vim/swap
 ranger/plugins
+vim/backup/*

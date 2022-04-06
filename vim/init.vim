@@ -188,6 +188,7 @@ augroup Others
 	autocmd FileType js let b:vimpipe_command="node"
 	autocmd BufRead,BufNewFile *.ol set filetype=olmos
 	autocmd filetype html setlocal foldmethod=indent
+	autocmd! VimEnter * if isdirectory(expand('%:p')) | exe 'cd %:p:h' | exe 'bd!'| exe 'Telescope file_browser' | endif
 augroup end 
 
 " Other

@@ -15,29 +15,6 @@ require('harpoon').setup {
 	mark_branch = false,
 }
 
---[[
-require('nvim-tree').setup {
-	disable_netrw = false,
-	hijack_diretories = {
-		enable = true,
-		auto_open = true
-	},
-	auto_close = true,
-	git = { enable = false },
-	view = {
-		side = 'right',
-		mappings = {
-			list = {
-				--unpack(tree_keymaps)
-			}
-		}
-	},
-	filters = {
-		dotfiles = true
-	},
-}
-]]
-
 vim.diagnostic.config {
 	virtual_text = false
 }

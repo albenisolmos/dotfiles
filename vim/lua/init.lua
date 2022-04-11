@@ -45,7 +45,10 @@ telescope.setup {
 	},
 	extensions = {
 		file_browser = {
+			grouped = true,
+			sorting_strategy = 'ascending',
 			initial_mode = 'normal',
+			theme = "dropdown"
 		},
 		fzf = {
 			fuzzy = true,

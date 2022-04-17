@@ -9,7 +9,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'JMcKiern/vim-venter'
 Plug 'tpope/vim-fugitive'
 Plug 'Raimondi/delimitMate'
-Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'javascript']}
+Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'javascriptreact', 'javascript']}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'kshenoy/vim-signature'
@@ -137,7 +137,7 @@ let g:ale_sign_warning = '!'
 " Gitgutter
 let g:gitgutter_sign_added = '│'
 let g:gitgutter_sign_removed = '│'
-let g:lets_start_cmd_file_explorer = 'NvimTreeVinegar'
+let g:lets_start_cmd_file_explorer = 'Telescope file_browser'
 let g:nvim_tree_icons = {
 	\ 'default': '',
 	\ 'symlink': '',

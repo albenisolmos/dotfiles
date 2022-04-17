@@ -27,13 +27,12 @@ nmap <silent> <leader>x :split<cr>
 nmap <leader>m <cmd>lua require("harpoon.mark").add_file()<cr>
 nmap <leader>M <cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>
 " Telescope
-nnoremap ff <cmd>Telescope find_files<cr>
-nnoremap fF <cmd>lua require('utils').telescope_project_search()<cr>
-nnoremap B <cmd>Telescope buffers<cr>
-nnoremap tp <cmd>lua require('telescope').extensions.project.project({})<cr>
+nmap F <cmd>Telescope file_browser theme=dropdown<cr>
+nmap ff <cmd>Telescope find_files theme=dropdown<cr>
+nmap B <cmd>Telescope buffers theme=dropdown <cr>
+nmap fp <cmd>lua require('utils').telescope_project_search()<cr>
+nmap fi <cmd>Telescope lsp_document_symbols theme=dropdown<cr>
 " Toggle
-nmap <silent> <leader>f :NvimTreeCToggle<cr>
-nmap <silent> F :Telescope file_browser<cr>
 nmap <silent> <leader>W :WriterMode<cr>
 nmap <silent> <leader>h :nohlsearch<cr>
 " Varius

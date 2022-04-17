@@ -6,5 +6,5 @@ vim/spell
 vim/autoload
 vim/backupdir
 vim/swap
-ranger/plugins
-vim/backup/*
+vim/syntax
+vim/backup

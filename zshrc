@@ -16,6 +16,8 @@ alias gomimes="vim ~/Documents/accounts/mime"
 alias gopatria="vim ~/Documents/accounts/patria"
 alias goremember="vim ~/Documents/remember/"
 alias govimrc="nvim ~/.config/nvim/init.vim"
+alias gozshrc="nvim ~/.config/zshrc"
+alias golfrc="nvim ~/.config/lf/lfrc"
 alias ihasw="ping www.google.com"
 alias vim="nvim"
 alias our="node ~/Dev/our/src/index.js"
@@ -23,6 +25,8 @@ alias ifind="find . -type f | xargs grep -l"
 alias iweighdir="du -hsx .* | sort -rh | head -n 40"
 alias luamake=/home/olmos/Downloads/software/lua-language-server/3rd/luamake/luamake
 alias intmux="tmux attach -t default || tmux new -s default"
+alias mkreinstall="make build && sudo make uninstall && sudo make install"
+alias mk="make build && ./main"
 
 autoload -U colors && colors #Enable colors and change prompt:
 autoload -Uz vcs_info #Load version control information
@@ -45,7 +49,6 @@ zmodload zsh/complist
 compinit
 _comp_options+=(globdots) # Include hidden files.
 
-
 bindkey -v #vi mode
 bindkey '^e' edit-command-line
 # Use vim keys in tab complete menu:
@@ -55,6 +58,7 @@ bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 bindkey -M menuselect '^M' .accept-line
+bindkey -s '^o' 'lfcd\n'
 
 function set_prompt() {
 	if ! [[ ${vcs_info_msg_0_} = "" ]]; then
@@ -88,6 +92,10 @@ zle-line-init() {
 }
 zle -N zle-line-init
 
+LFCD="$HOME/.config/lf/lfcd.sh"
+if [ -f "$LFCD" ]; then
+	source "$LFCD"
+fi
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"

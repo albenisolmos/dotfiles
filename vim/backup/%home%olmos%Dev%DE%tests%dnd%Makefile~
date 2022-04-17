@@ -1,4 +1,0 @@
-LIBS = -lolmos -lolmosui `pkg-config --cflags --libs gtk+-3.0`
-
-build: main.c
-	gcc main.c -o main $(LIBS)

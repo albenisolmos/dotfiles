@@ -1,8 +1,0 @@
-#ifndef __OL_DND_EXPANDER_H__
-#define __OL_DND_EXPANDER_H__
-
-#include <gtk/gtk.h>
-
-void ol_dnd_expander_setup_dest(GtkWidget *box, GtkTargetEntry *entries);
-GtkWidget * ol_dnd_expander_setup_child(GtkWidget *child, GtkTargetEntry *entries);
-#endif

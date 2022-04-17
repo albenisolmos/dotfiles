@@ -1,9 +1,0 @@
-function s:set_bufhidden()
-	if &ft != 'netrw'
-		set bufhidden=hide
-	endif
-endfun
-augroup Netrw
-    autocmd!
-    autocmd BufWinEnter * call s:set_bufhidden()
-augroup end

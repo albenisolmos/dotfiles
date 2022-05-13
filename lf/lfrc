@@ -4,7 +4,17 @@ set nopreviewer
 set ratios '2'
 
 map T set preview!
+map I set hidden!
 map S $$SHELL
+map D trash
+map m push :mkdir<space>
+# Unmap the default binding
+map r
+map R rename_filename
+map ra push :rename<space>
+map re rename_without_ext
+map ` push :open-with<space>
+
 map gh cd ~
 map gD cd ~/Documents
 map gd cd ~/Downloads
@@ -14,9 +24,6 @@ map go cd ~/.dotfiles
 map gl cd ~/.local
 map gc cd ~/.config
 map gu cd /usr
-
-map D trash
-map m push :mkdir<space>
 
 cmd mkdir ${{
 	mkdir $1
@@ -29,43 +36,33 @@ cmd open ${{
 	esac
 }}
 
-cmd on-cd &{{
-    # display git repository status in your prompt
-    source /usr/share/git/completion/git-prompt.sh
-    GIT_PS1_SHOWDIRTYSTATE=auto
-    GIT_PS1_SHOWSTASHSTATE=auto
-    GIT_PS1_SHOWUNTRACKEDFILES=auto
-    GIT_PS1_SHOWUPSTREAM=auto
-    git=$(__git_ps1 " (%s)") || true
-    fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f$git\033[0m"
-    lf -remote "send $id set promptfmt \"$fmt\""
-}}
-on-cd
-
-# Unmap the default binding
-map r
-map R push :rename<space>
-map ra rename-completely
-map re rename-noextension
-map ` push :open-with<space>
-
 cmd rename ${{
-	# Edit the current filename
+	# Rename the file with a completely different name
 	# get 'basename' of the selection
 	filename="${f##*/}"
-	# quote it so we won't deal with quotes in the lf -remote command
-	filename="$(printf "'%s'" "$filename")"
-	echo $filename
-	#filename="${filename// /<space>}"
-	lf -remote "send $id push :rename<space>$filename"
+	# filename="$(printf "'%s'" "$filename")"
+	# filename="${filename// /<space>}"
+	mv "$filename" "$1"
+	# lf -remote "send $id push :rename<space>'$filename'"
 }}
 
-cmd rename-completely &{{
-	# Rename the file with a completely different name
-	mv $f $1
+cmd rename_filename ${{
+	# Edit the current filename
+	filename="${f##*/}"
+	extension="${filename##*.}"
+	length_extension="${#extension}"
+	displace=""
+
+	i=0
+	while [ "$i" -le $length_extension ]; do
+		i=$(( i + 1 ))
+		displace="${displace}<left>"
+	done
+
+	lf -remote "send $id push :rename<space>$filename$displace"
 }}
 
-cmd rename-noextension ${{
+cmd rename_without_ext ${{
 	# Edit filename before the extension
 	# get 'basename' of the selection
 	filename="${f##*/}"
@@ -131,6 +128,5 @@ cmd zip ${{
 	zip -r $1.zip $1
 	rm -rf $1
 }}
-
 
 source "/home/olmos/.config/lf/icons"

@@ -1,20 +1,20 @@
-CONFIGPATH = ~/.config
 HOMEPATH = ~/
-LINKCMD = ln -s
+CONFIGPATH = $(HOMEPATH).config
+LINKCMD = ln -fs
 
-FILES_TO_HOME = zshrc zshenv zprofile
-FILES_TO_CONFIG = ranger
-ALL = ${FILES_TO_HOME} ${FILES_TO_CONFIG}
+FILES_TO_HOME = tmux.conf xprofile zshrc zshenv
+FILES_TO_CONFIG = zsh nvim lf
+ALL = $(FILES_TO_HOME) $(FILES_TO_CONFIG)
 
 .SILENT:
-.PHONY: ${ALL}
+.PHONY: $(ALL)
 
-install: ${ALL}
+install: $(ALL)
 
-${FILES_TO_CONFIG}:
-	@echo "${CURDIR}/$@ -> ${CONFIGPATH}/$@"
-	${LINKCMD} ${CURDIR}/$@ -> ${CONFIGPATH}/$@
+$(FILES_TO_CONFIG):
+	@echo "$(CURDIR)/$@ -> $(CONFIGPATH)/$@"
+	$(LINKCMD) $(CURDIR)/$@ $(CONFIGPATH)/$@
 
-${FILES_TO_HOME}:
-	@echo "${CURDIR}/$@ -> ${HOMEPATH}.$@"
-	${LINKCMD} ${CURDIR}/$@  ${HOMEPATH}/$@
+$(FILES_TO_HOME):
+	@echo "$(CURDIR)/$@ -> $(HOMEPATH).$@"
+	$(LINKCMD) $(CURDIR)/$@  $(HOMEPATH).$@

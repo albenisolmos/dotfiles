@@ -51,6 +51,7 @@ vmap <leader>p "+p
 nmap <leader>g gg=G''
 nmap <leader>v <cmd>so $MYVIMRC<cr>
 nmap ! :!
+imap <C-c> <esc><right>
 tmap <C-6> <C-w>N<C-6>
 tmap <Esc> <C-w>N
 nmap <leader>s :%s///g<left><left><left>

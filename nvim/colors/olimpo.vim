@@ -45,8 +45,8 @@ let s:gui_violet = '#B16286'
 let s:gui_yellow = '#ffad57'
 let s:gui_green = "#98971a"
 
-let g:olmos_statusline_fg = s:gui_weak
-let g:olmos_statusline_bg = s:gui_bg2
+let g:statusline_fg = s:gui_weak
+let g:statusline_bg = s:gui_bg2
 
 function! s:hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
   if a:guifg != ""
@@ -76,7 +76,7 @@ endfunction
 "call s:hi("Cursor", "NONE", "NONE", "NONE", "NONE", "", "")
 call s:hi("CursorLine", "NONE", "NONE", "NONE", "NONE", "NONE", "")
 call s:hi("LineNr", s:gui_very_weak, "", "", "", "", "")
-call s:hi("CursorLineNR", s:gui_weak, "", "", "", "", "")
+"call s:hi("CursorLineNR", s:gui_weak, "", "", "", "", "")
 
 " -----------------
 " - Number column -
@@ -86,12 +86,11 @@ call s:hi("Folded", s:gui_very_weak, s:gui_bg, "NONE", "", "NONE", "")
 call s:hi("FoldColumn", s:gui_weak, s:gui_bg, "", "", "", "")
 call s:hi("SignColumn", s:gui_weak, s:gui_bg, "", "", "", "")
 call s:hi("SignatureMarkText", s:gui_weak, s:gui_bg, "", "", "", "")
-
 " -------------------------
 " - Window/Tab delimiters - 
 " -------------------------
-call s:hi("VertSplit", s:gui_bg, s:gui_bg2, "", "", "", "")
-call s:hi("ColorColumn", "", "#303030", "", "", "", "")
+call s:hi("VertSplit", s:gui_bg2, s:gui_bg, "", "", "", "")
+call s:hi("ColorColumn", "", s:gui_bg2, "", "", "", "")
 call s:hi("TabLine", s:gui_weak, s:gui_bg, "", "", "NONE", "")
 call s:hi("TabLineSel", s:gui_weak, s:gui_bg, "", "", "NONE", "")
 call s:hi("TabLineFill", s:gui_bg, s:gui_bg, "", "", "", "")
@@ -179,14 +178,10 @@ call s:hi("Typedef", s:gui_bg2, "", "", "", "", "")
 " --------------------------------
 " Diff
 " --------------------------------
-hi DiffAdd         ctermfg=none    ctermbg=none    cterm=none
-call s:hi("DiffAdd", "#228ae7", s:gui_bg, "", "", "", "")
-hi DiffChange      ctermfg=none    ctermbg=none    cterm=none
-call s:hi("DiffChange", "#228ae7", "#645711", "", "", "", "")
-hi DiffDelete      ctermfg=none    ctermbg=none    cterm=none
-call s:hi("DiffDelete", "", "#3d2929", "", "", "", "")
-hi DiffText        ctermfg=none    ctermbg=none    cterm=none
-call s:hi("DiffText", "#ffffff", "#3d2929", "", "", "", "")
+call s:hi("DiffAdd", "#228ae7", s:gui_bg, "none", "none", "", "")
+call s:hi("DiffChange", "#228ae7", "#645711", "none", "none", "", "")
+call s:hi("DiffDelete", "", "#3d2929", "none", "none", "", "")
+call s:hi("DiffText", "#ffffff", "#3d2929", "none", "none", "", "")
 
 " --------------------------------
 " Completion menu
@@ -208,19 +203,19 @@ hi SpellRare       ctermfg=none    ctermbg=none    cterm=none
 "--------------------------------------------------------------------
 " Specific settings                                                 |
 "--------------------------------------------------------------------
-call s:hi("netrwDir", s:gui_yellow, "", "", "", "bold", "")
-"hi! link netrwMarkFile Search
-call s:hi("netrwMarkFile", "", "NONE", "", "", "bold", "")
-hi rustFuncName ctermfg=215 cterm=bold
-"hi jsFuncName   ctermfg=215 cterm=bold
-"call s:hi("jsFuncName", s:gui_yellow, "", "", "", "", "")
-hi jsNoise      ctermfg=8 ctermbg=none cterm=none
+" CSS
 hi cssColor     ctermfg=5 ctermbg=none cterm=none
-"hi cssProp ctermfg=215 ctermbg=none cterm=none
 hi cssAttr      ctermfg=5 ctermbg=none cterm=none
 hi cssUnitDecorators ctermfg=96 ctermbg=none cterm=none
-call s:hi('luaFuncCall', s:gui_yellow, "", "", "", "", "")
 hi cssAtKeyWord ctermfg=203 ctermbg=none cterm=none
+" Varius
+hi rustFuncName ctermfg=215 cterm=bold
+hi jsNoise      ctermfg=8 ctermbg=none cterm=none
+call s:hi('luaFuncCall', s:gui_yellow, "", "", "", "", "")
 " Netrw
+call s:hi("netrwDir", s:gui_yellow, "", "", "", "bold", "")
+call s:hi("netrwMarkFile", "", "NONE", "", "", "bold", "")
 call s:hi('netrwTreeBar', s:gui_bg2, "", "", "", "", "")
 call s:hi('netrwClassify', s:gui_bg, "", "", "", "", "")
+
+hi! link CursorLineNR Normal

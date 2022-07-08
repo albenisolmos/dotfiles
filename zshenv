@@ -16,8 +16,13 @@ export GTK_OVERLAY_SCROLLING=0
 #export VIM="/usr/local/share/nvim"
 #export VIMRUNTIME="$VIM/runtime"
 export EDITOR="nvim"
+export OPENER="xdg-open"
 #export QT_STYLE_OVERIDE=GTK+
 
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
 	tmux attach -t default || tmux new -s default
+fi
+
+if [ -d "$HOME/.cargo/env" ]; then
+	source "$HOME/.cargo/env"
 fi

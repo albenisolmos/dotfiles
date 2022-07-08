@@ -17,13 +17,17 @@ setopt menu_complete
 unsetopt BEEP
 zle_highlight=('paste:none')
 
+setopt inc_append_history share_history
+SAVEHIST=1000  # Save most-recent 1000 lines
+HISTFILE=~/.config/zsh/history
+
 # Basic auto/tab complete:
 autoload -Uz compinit
 zstyle ':completion:*' menu select
 #zstyle ':completion:*' file-sort modification
 #zstyle ':completion:*:*:cp:*' file-sort size
 #zstyle ':completion:*' completer _expand_alias _complete _ignored
-zstyle ':vcs_info:git:*' formats '%b' #Format the vcs_info_msg_0_ variable
+
 zmodload zsh/complist
 compinit
 _comp_options+=(globdots) # Include hidden files.
@@ -62,10 +66,10 @@ zle -N zle-line-init
 echo -ne '\e[6 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[6 q' ;} #Use beam shape cursor new prompt.
 
-[ -f "$HOME/.config/lf/lfcd.sh" ] && source "$HOME/.config/lf/lfcd.sh"
 # Plugins
+[ -f "$HOME/.config/lf/lfcd.sh" ] && source "$HOME/.config/lf/lfcd.sh"
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "hlissner/zsh-autopair"
 zsh_add_completion "esc/conda-zsh-completion" false
 zsh_add_plugin "dracula/zsh-syntax-highlighting"
-zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
+#zsh_add_plugin "zsh-users/zsh-syntax-highlighting"

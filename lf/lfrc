@@ -7,13 +7,14 @@ map T set preview!
 map I set hidden!
 map S $$SHELL
 map D trash
-map m push :mkdir<space>
+map m push %mkdir<space>
+map n push %touch<space>
 # Unmap the default binding
 map r
 map R rename_filename
 map ra push :rename<space>
 map re rename_without_ext
-map ` push :open-with<space>
+map <enter> push :open-with<space>
 
 map gh cd ~
 map gD cd ~/Documents
@@ -25,15 +26,12 @@ map gl cd ~/.local
 map gc cd ~/.config
 map gu cd /usr
 
-cmd mkdir ${{
-	mkdir $1
-}}
-
 cmd open ${{
-	case $(file --mime-type $f -b) in
-		text/*) $EDITOR $fx;;
-			 *) for f in $fx; do setsid rifle $f > /dev/null 2> /dev/null & done;;
-	esac
+    case $(file --mime-type $f -b) in
+        text/*) nvim "$fx";;
+		inode/x-empty) nvim "$fx";;
+        *) for f in $fx; do xdg-open $f > /dev/null 2> /dev/null & done;;
+    esac
 }}
 
 cmd rename ${{
@@ -72,7 +70,7 @@ cmd rename_without_ext ${{
 	lf -remote "send $id push :rename<space>$filename<a-b><c-b>"
 }}
 
-cmd trash ${{
+cmd trash %{{
 	set -f
 	if gio trash 2>/dev/null; then
 		gio trash "$fx"
@@ -81,12 +79,13 @@ cmd trash ${{
 		mv -- "$fx" ~/.local/share/Trash/files
 	fi
 }}
+	
+cmd open-with &"$@" "$fx"
 
 cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
 cmd yank-path $printf '%s' "$fx" | xclip -i -selection clipboard
 cmd yank-basename $basename -a -- $fx | head -c-1 | xclip -i -selection clipboard
 
-cmd open-with %"$@" "$fx"
 
 cmd select-all-files ${{
 	{ echo "$fs"; find -L "$(pwd)" -mindepth 1 -maxdepth 1 -type f; } |

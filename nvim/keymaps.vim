@@ -2,8 +2,8 @@ let mapleader = ' '
 
 nmap q <nop> " disable macro
 nmap <space> <nop>
-"nnoremap <expr> j v:count ? 'j' : 'gj'
-"nnoremap <expr> k v:count ? 'k' : 'gk'
+nmap <expr> j v:count ? 'j' : 'gj'
+nmap <expr> k v:count ? 'k' : 'gk'
 
 " Jump
 nmap <C-j> }
@@ -27,27 +27,29 @@ nmap <silent> <leader>z :vsp<cr>
 nmap <silent> <leader>x :split<cr>
 
 " Telescope
-nmap ff <cmd>Telescope find_files theme=dropdown<cr>
 nmap fb <cmd>Telescope buffers theme=dropdown sort_lastused=true ignore_current_buffer=true<cr>
-nmap fp <cmd>lua require('utils').telescope_project_search()<cr>
+nmap ff <cmd>lua require('me.utils').find_git_files()<cr>
 nmap fi <cmd>Telescope lsp_document_symbols theme=dropdown<cr>
+nmap fp <cmd>lua require('telescope').extensions.project.project{}<cr>
 
 " Harpoon
-nmap ss <cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>
-nmap sa <cmd>lua require("harpoon.mark").add_file()<cr>
-nmap sh> <cmd>lua require("harpoon.ui").nav_file(1)<CR>
-nmap sj> <cmd>lua require("harpoon.ui").nav_file(2)<CR>
-nmap sk> <cmd>lua require("harpoon.ui").nav_file(3)<CR>
-nmap sl> <cmd>lua require("harpoon.ui").nav_file(4)<CR>
-for i in [1,2,3,4,5,6,7,8,9]
-	execute printf('nmap s%d <cmd>lua require("harpoon.ui").nav_file(%d)<cr>', i, i)
-endfor
+nmap ss <cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>
+nmap sa <cmd>lua require('harpoon.mark').add_file()<cr>
+nmap sh <cmd>lua require('harpoon.ui').nav_file(1)<cr>
+nmap sj <cmd>lua require('harpoon.ui').nav_file(2)<cr>
+nmap sk <cmd>lua require('harpoon.ui').nav_file(3)<cr>
+nmap sl <cmd>lua require('harpoon.ui').nav_file(4)<cr>
 
 " Others
 nmap F <cmd>Lf<cr>
+nmap fd <cmd>Lfcd<cr>
+nmap fld <cmd>Lflcd<cr>
+nmap <leader>D <cmd>cd %:p:h<cr>
+nmap <leader>dl <cmd>cd %:p:h<cr>
 nmap <leader>h <cmd>nohlsearch<cr>
 vmap <leader>y "+y
 vmap <leader>p "+p
+vmap r :s///g<left><left><left>
 nmap <leader>g gg=G''
 nmap <leader>v <cmd>so $MYVIMRC<cr>
 nmap ! :!
@@ -60,7 +62,7 @@ inoremap <C-l> <delete>
 inoremap <C-o> <Esc>o
 inoremap <c-d> <Esc>diwi
 inoremap <C-delete> <esc><right>dwi
-nmap vv viw
+nmap <leader>v viw
 nmap <leader>* /<c-r>=expand("<cword>")<CR><CR>N
 nmap <leader>i :SyncGroup<cr>
 

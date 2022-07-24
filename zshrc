@@ -2,7 +2,6 @@ export ZDOTDIR=$HOME/.config/zsh
 
 stty stop undef # Disable ctrl-s to freeze terminal.
 source "$ZDOTDIR/functions"
-zsh_add_file "prompt"
 
 alias poweroff="sudo systemctl poweroff"
 alias logout="kill -9 -1"

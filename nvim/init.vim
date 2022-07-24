@@ -1,12 +1,9 @@
 call plug#begin('~/.local/share/nvim/plugged')
-" Local
-"Plug '~/Dev/vim-plugins/lets-start'
-Plug '~/Dev/vim-plugins/nvim-tree-config'
 " Depencies
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/plenary.nvim'
 "Varius
-Plug 'glepnir/dashboard-nvim'
+Plug 'ThePrimeagen/harpoon'
 Plug 'ptzz/lf.vim'
 Plug 'voldikss/vim-floaterm'
 Plug 'JMcKiern/vim-venter'
@@ -19,7 +16,8 @@ Plug 'kshenoy/vim-signature'
 Plug 'airblade/vim-gitgutter'
 " Telescope
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-project.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 " LSP
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
@@ -38,10 +36,9 @@ call plug#end()
 
 set termguicolors
 set bg=dark
-colorscheme olimpo 
+colorscheme olimpo
 syntax on
 set lazyredraw
-set autochdir
 set title
 set titlestring=%t\ \-\ Vim
 set number
@@ -49,7 +46,7 @@ set numberwidth=3
 set cursorline
 set showtabline=1
 set winwidth=10
-set nohidden
+set hidden
 " Tabs & Spaces
 set shiftwidth=4
 set tabstop=4
@@ -63,7 +60,7 @@ set linebreak
 set breakindent
 set showbreak=↳\ 
 set list
-set listchars=tab:\│\ ,trail:· 
+set listchars=tab:\ \ ,trail:• 
 set fillchars+=vert:\│ 
 " Fold
 set foldmethod=syntax
@@ -85,141 +82,137 @@ set splitbelow
 set completeopt=menuone,noinsert,preview
 "set wildmenu
 set wildmode=longest:full,full
-set wildchar=<Tab>
-" Status Bar
+" Ruler
 set noshowmode
 set ruler
 set rulerformat=%#LineNr#%{toupper(g:currentmode[mode()])}
 set rulerformat+=\ %(\ %M\ %)%(\ %R\ %)%(\ %H\ %)
 set rulerformat+=%=≡\ %L:%l
+set cmdheight=0
+" Statusline
 set laststatus=3
 set statusline=%#User1#%{IsCurrentWindow()}\ %* 
 set statusline+=\ %#User2#%t%*
 set statusline+=%=
 set statusline+=%{toupper(g:currentmode[mode()])}
+set statusline+=%(\ %R%)%(\ %H%)%(\ %M%)
 set statusline+=%=
 set statusline+=%#StatuslineNc#\ %{fugitive#statusline()}
-set statusline+=\ %3*│%#StatuslineNc#\ %{fnamemodify(getcwd(),':t')}\ %3*│%#StatuslineNc#
-set statusline+=%(\ %R%)%(\ %H%)
-set statusline+=\ %p%%\ \≡\ %L:%l\ \ 
+set statusline+=\ %3*│%#Statusline#\ 
+set statusline+=\ %{fnamemodify(getcwd(),':t')}
+set statusline+=\ %3*│%#Statusline#\ 
+set statusline+=\≡\ %l:%L\ \ 
 " nose
 set scrolloff=5
 set mouse=a
-"set shortmess+=c
-"set belloff+=ctrlg
+set shortmess+=c
 set ttyfast
 set clipboard=unnamedplus
 " Ignore files
-set wildignore+=*.pyc
+set wildignore+=*.pyc,*.o
 set wildignore+=build/*
 set wildignore+=**/node_modules/*
 set wildignore+=**/.git/*
 
-if !has('nvim')
-	set ttymouse=xterm2
-endif
-
 "
 " Let
 "
-
-" Shape of cursor
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 let g:venter_disable_vertsplit = v:true
-" Emmet
 let g:user_emmet_install_global = 0
 let g:user_emmet_leader_key = '<C-a>'
-" Ale
-let g:ale_sign_error = 'x'
-let g:ale_sign_warning = '!'
-" Gitgutter
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = ''
 let g:gitgutter_sign_added = '│'
 let g:gitgutter_sign_removed = '│'
-let g:nvim_tree_icons = {
-	\ 'default': '',
-	\ 'symlink': '',
-	\ 'git': {
-		\ 'unstaged': "✗",
-		\ 'staged': "✓",
-		\ 'unmerged': "",
-		\ 'renamed': "➜",
-		\ 'untracked': "★",
-		\ 'deleted': "",
-		\ 'ignored': "◌"
-		\ },
-	\ 'folder': {
-		\ 'arrow_open': "",
-		\ 'arrow_closed': "",
-		\ 'default': "",
-		\ 'open': "",
-		\ 'empty': "",
-		\ 'empty_open': "",
-		\ 'symlink': "",
-		\ 'symlink_open': ""
-	\ }
-\ }
 let g:floaterm_borderchars='─│─│╭╮╯╰'
 let g:dashboard_default_executive ='telescope'
-let g:dashboard_custom_header=[]
-let g:dashboard_custom_header0=[
-    \'',
-    \' ⡿⠉⠄⠄⠄⠄⠈⠙⠿⠟⠛⠉⠉⠉⠄⠄⠄⠈⠉⠉⠉⠛⠛⠻⢿⣿⣿⣿⣿⣿ ',
-    \' ⠁⠄⠄⠄⢀⡴⣋⣵⣮⠇⡀⠄⠄⠄⠄⠄⠄⢀⠄⠄⠄⡀⠄⠄⠄⠈⠛⠿⠋⠉ ',
-    \' ⠄⠄⠄⢠⣯⣾⣿⡿⣳⡟⣰⣿⣠⣂⡀⢀⠄⢸⡄⠄⢀⣈⢆⣱⣤⡀⢄⠄⠄⠄ ',
-    \' ⠄⠄⠄⣼⣿⣿⡟⣹⡿⣸⣿⢳⣿⣿⣿⣿⣴⣾⢻⣆⣿⣿⣯⢿⣿⣿⣷⣧⣀⣤ ',
-    \' ⠄⠄⣼⡟⣿⠏⢀⣿⣇⣿⣏⣿⣿⣿⣿⣿⣿⣿⢸⡇⣿⣿⣿⣟⣿⣿⣿⣿⣏⠋ ',
-    \' ⡆⣸⡟⣼⣯⠏⣾⣿⢸⣿⢸⣿⣿⣿⣿⣿⣿⡟⠸⠁⢹⡿⣿⣿⢻⣿⣿⣿⣿⠄ ',
-    \' ⡇⡟⣸⢟⣫⡅⣶⢆⡶⡆⣿⣿⣿⣿⣿⢿⣛⠃⠰⠆⠈⠁⠈⠙⠈⠻⣿⢹⡏⠄ ',
-    \' ⣧⣱⡷⣱⠿⠟⠛⠼⣇⠇⣿⣿⣿⣿⣿⣿⠃⣰⣿⣿⡆⠄⠄⠄⠄⠄⠉⠈⠄⠄ ',
-    \' ⡏⡟⢑⠃⡠⠂⠄⠄⠈⣾⢻⣿⣿⡿⡹⡳⠋⠉⠁⠉⠙⠄⢀⠄⠄⠄⠄⠄⠂⠄ ',
-    \' ⡇⠁⢈⢰⡇⠄⠄⡙⠂⣿⣿⣿⣿⣱⣿⡗⠄⠄⠄⢀⡀⠄⠈⢰⠄⠄⠄⠐⠄⠄ ',
-    \' ⠄⠄⠘⣿⣧⠴⣄⣡⢄⣿⣿⣿⣷⣿⣿⡇⢀⠄⠤⠈⠁⣠⣠⣸⢠⠄⠄⠄⠄⠄ ',
-    \' ⢀⠄⠄⣿⣿⣷⣬⣵⣿⣿⣿⣿⣿⣿⣿⣷⣟⢷⡶⢗⡰⣿⣿⠇⠘⠄⠄⠄⠄⠄ ',
-    \' ⣿⠄⠄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣾⣿⣿⡟⢀⠃⠄⢸⡄⠁⣸ ',
-    \' ⣿⠄⠄⠘⢿⣿⣿⣿⣿⣿⣿⢛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⢄⡆⠄⢀⣪⡆⠄⣿ ',
-    \' ⡟⠄⠄⠄⠄⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣟⣻⣩⣾⣃⣴⣿⣿⡇⠸⢾ ',
-    \'',
+let g:dashboard_custom_header =[
+    \'    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠤⠖⠚⢉⣩⣭⡭⠛⠓⠲⠦⣄⡀⠀⠀⠀⠀⠀⠀⠀  ',
+    \'    ⠀⠀⠀⠀⠀⠀⢀⡴⠋⠁⠀⠀⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠳⢦⡀⠀⠀⠀⠀  ',
+    \'    ⠀⠀⠀⠀⢀⡴⠃⢀⡴⢳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣆⠀⠀⠀  ',
+    \'    ⠀⠀⠀⠀⡾⠁⣠⠋⠀⠈⢧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢧⠀⠀  ',
+    \'    ⠀⠀⠀⣸⠁⢰⠃⠀⠀⠀⠈⢣⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣇⠀  ',
+    \'    ⠀⠀⠀⡇⠀⡾⡀⠀⠀⠀⠀⣀⣹⣆⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⠀  ',
+    \'    ⠀⠀⢸⠃⢀⣇⡈⠀⠀⠀⠀⠀⠀⢀⡑⢄⡀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇  ',
+    \'    ⠀⠀⢸⠀⢻⡟⡻⢶⡆⠀⠀⠀⠀⡼⠟⡳⢿⣦⡑⢄⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇  ',
+    \'    ⠀⠀⣸⠀⢸⠃⡇⢀⠇⠀⠀⠀⠀⠀⡼⠀⠀⠈⣿⡗⠂⠀⠀⠀⠀⠀⠀⠀⢸⠁  ',
+    \'    ⠀⠀⡏⠀⣼⠀⢳⠊⠀⠀⠀⠀⠀⠀⠱⣀⣀⠔⣸⠁⠀⠀⠀⠀⠀⠀⠀⢠⡟⠀  ',
+    \'    ⠀⠀⡇⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⢸⠃⠀  ',
+    \'    ⠀⢸⠃⠘⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⠀⠀⢀⠀⠀⠀⠀⠀⣾⠀⠀  ',
+    \'    ⠀⣸⠀⠀⠹⡄⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⡞⠀⠀⠀⠸⠀⠀⠀⠀⠀⡇⠀⠀  ',
+    \'    ⠀⡏⠀⠀⠀⠙⣆⠀⠀⠀⠀⠀⠀⠀⢀⣠⢶⡇⠀⠀⢰⡀⠀⠀⠀⠀⠀⡇⠀⠀  ',
+    \'    ⢰⠇⡄⠀⠀⠀⡿⢣⣀⣀⣀⡤⠴⡞⠉⠀⢸⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⣧⠀⠀  ',
+    \'    ⣸⠀⡇⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⢹⠀⠀⢸⠀⠀⢀⣿⠇⠀⠀⠀⠁⠀⢸⠀⠀  ',
+    \'    ⣿⠀⡇⠀⠀⠀⠀⠀⢀⡤⠤⠶⠶⠾⠤⠄⢸⠀⡀⠸⣿⣀⠀⠀⠀⠀⠀⠈⣇⠀  ',
+    \'    ⡇⠀⡇⠀⠀⡀⠀⡴⠋⠀⠀⠀⠀⠀⠀⠀⠸⡌⣵⡀⢳⡇⠀⠀⠀⠀⠀⠀⢹⡀  ',
+    \'    ⡇⠀⠇⠀⠀⡇⡸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠮⢧⣀⣻⢂⠀⠀⠀⠀⠀⠀⢧  ',
+    \'    ⣇⠀⢠⠀⠀⢳⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡎⣆⠀⠀⠀⠀⠀⠘  ',
     \]
-let g:dashboard_custom_shortcut_icon['last_session'] = ' '
-let g:dashboard_custom_shortcut_icon['find_history'] = 'ﭯ '
-let g:dashboard_custom_shortcut_icon['find_file'] = ' '
-let g:dashboard_custom_shortcut_icon['new_file'] = ' '
-let g:dashboard_custom_shortcut_icon['change_colorscheme'] = ' '
-let g:dashboard_custom_shortcut_icon['find_word'] = ' '
-let g:dashboard_custom_shortcut_icon['book_marks'] = ' '
-"
-" Highlight
-"
-hi User1 guifg=#228ae7 guibg=#000000 ctermfg=236 ctermbg=236 
-execute 'hi User2 guifg=#228ae7 guibg=' . g:olmos_statusline_bg
-execute 'hi User3 guifg=#353535 guibg=' . g:olmos_statusline_bg
-hi GitGutterAdd    guifg=#009900 ctermfg=2
-hi GitGutterChange guifg=#bbbb00 ctermfg=3
-hi GitGutterDelete guifg=#ff2222 ctermfg=1
-hi FloatermBorder guibg=none guifg=#505050
+let g:dashboard_custom_shortcut_icon = {}
+let g:lf_replace_netrw = 1
+" Disable built-in plugins
+let g:loaded_gzip = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
+
+let g:loaded_getscript = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_vimball = 1
+let g:loaded_vimballPlugin = 1
+
+let g:loaded_matchit = 1
+let g:loaded_matchparen = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_logiPat = 1
+let g:loaded_rrhelper = 1
+
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
 "
 " Commands
 "
 command Q :q
 command W :w
+
 "
 " AutoCMD
 "
 augroup FancyStatusline
 	autocmd WinLeave * call setwinvar(winnr(), 'curr', 0)
 	autocmd WinEnter * call setwinvar(winnr(), 'curr', 1)
+	autocmd VimEnter * call setwinvar(winnr(), 'curr', 1)
 augroup end
 
 augroup Others
 	autocmd FileType js let b:vimpipe_command="node"
 	autocmd BufRead,BufNewFile *.ol set filetype=olmos
 	autocmd filetype html setlocal foldmethod=indent
-	autocmd! VimEnter * if isdirectory(expand('%:p')) | exe 'cd %:p:h' | exe 'bd!'| exe 'Telescope file_browser' | endif
 augroup end 
 
-" Other
-source ~/.config/nvim/keymaps.vim
+"
+" Resources
+"
 source ~/.config/nvim/functions.vim
-lua require('init')
+source ~/.config/nvim/keymaps.vim
+luafile ~/.config/nvim/lua/me/init.lua
+
+"
+" Highlight
+"
+hi User1 guifg=#228ae7 guibg=#000000 ctermfg=236 ctermbg=236 
+execute 'hi User2 guifg=#228ae7 guibg=' . g:statusline_bg
+execute 'hi User3 guifg=#353535 guibg=' . g:statusline_bg
+hi GitGutterAdd    guifg=#009900 ctermfg=2
+hi GitGutterChange guifg=#bbbb00 ctermfg=3
+hi GitGutterDelete guifg=#ff2222 ctermfg=1
+hi FloatermBorder guibg=none guifg=#505050
+hi Pmenu guibg=none
+hi CmpBorder guibg=none guifg=#404040
+hi FloatBorder guifg=#635644

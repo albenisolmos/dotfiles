@@ -1,3 +1,5 @@
 nvim/colors
 nvim/spell
 zsh/plugins
+zsh/history
+zsh/.zcompdump

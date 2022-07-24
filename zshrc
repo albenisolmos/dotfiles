@@ -2,8 +2,49 @@ export ZDOTDIR=$HOME/.config/zsh
 
 stty stop undef # Disable ctrl-s to freeze terminal.
 source "$ZDOTDIR/functions"
-zsh_add_file "aliases"
 zsh_add_file "prompt"
+
+alias poweroff="sudo systemctl poweroff"
+alias logout="kill -9 -1"
+alias l="lf"
+alias g="git"
+alias v="nvim"
+alias s="sudo"
+alias gobanks="nvim ~/Documents/accounts/banks"
+alias gomimes="nvim ~/Documents/accounts/mime"
+alias gopatria="nvim ~/Documents/accounts/patria"
+alias goremember="nvim ~/Documents/remember/"
+alias govimrc="nvim ~/.config/nvim/init.vim"
+alias gozshrc="nvim ~/.config/zshrc"
+alias golfrc="nvim ~/.config/lf/lfrc"
+alias ihasw="ping www.google.com"
+alias ifind="find . -type f | xargs grep -l"
+alias iweighdir="du -hsx .* | sort -rh | head -n 40"
+alias luamake=/home/olmos/Downloads/software/lua-language-server/3rd/luamake/luamake
+alias intmux="tmux attach -t default || tmux new -s default"
+alias mkreinstall="make build && sudo make uninstall && sudo make install"
+alias mk="make build && ./main"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Load version control information
+autoload -Uz vcs_info
+precmd() { vcs_info }
+
+# enable only git 
+#zstyle ':vcs_info:*' enable git 
+# Format the vcs_info_msg_0_ variable
+zstyle ':vcs_info:git:*' formats ' %F{#8c7e6a}%b |'
+
+setopt PROMPT_SUBST
+PROMPT='${vcs_info_msg_0_} %F{#8c7e6a}%~ %B%(0?.%F{5}.%F{red})$ %{$reset_color%}'
 
 autoload -U colors && colors # colors
 zle_highlight=('paste:none')
@@ -24,9 +65,6 @@ HISTFILE=~/.config/zsh/history
 # Basic auto/tab complete:
 autoload -Uz compinit
 zstyle ':completion:*' menu select
-#zstyle ':completion:*' file-sort modification
-#zstyle ':completion:*:*:cp:*' file-sort size
-#zstyle ':completion:*' completer _expand_alias _complete _ignored
 
 zmodload zsh/complist
 compinit

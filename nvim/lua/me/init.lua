@@ -13,6 +13,6 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Large setups --
-require('cmp-setup')
-require('lsp-setup')(servers)
-require('telescope-setup')
+require('me.cmp')
+require('me.lsp')(servers)
+require('me.telescope')

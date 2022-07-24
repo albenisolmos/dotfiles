@@ -21,42 +21,30 @@ let g:currentmode={
 			\ 't'  : 'Term'
 			\}
 
-function s:set_hi(group, fg, bg)
-	if a:fg != ''
-		execute 'hi ' . a:group . ' guifg=' . a:fg
-	endif
-	if a:bg != ''
-		execute 'hi ' . a:group . ' guibg=' . a:bg 
-	endif
-endfun
-
-function s:writer_mode()
-	if getwinvar(winnr(), '&number') == '0'
-		setlocal number
-		set showbreak=↳\ 
-	else
-		setlocal nonumber
-		set showbreak=
-	endif
-endfun
-command WriterMode call s:writer_mode()
-
+let g:last_mode=''
 function! IsCurrentWindow()
 	if getwinvar(winnr(), 'curr')
-		let newmode = mode()
-		if newmode == 'i'
+		let new_mode = mode()
+
+		if g:last_mode == new_mode
+			return ''
+		endif
+
+		if new_mode == 'i'
 			hi User1 guibg=#FFAD57 ctermfg=236 ctermbg=215
-			hi User1 guifg=#FFAD57 ctermfg=215 ctermbg=236
-		elseif newmode == 'v' || newmode == 'V'
+			hi User2 guifg=#FFAD57 ctermfg=215 ctermbg=236
+		elseif new_mode == 'v' || new_mode == 'V'
 			hi User1 guibg=#B16286 ctermfg=236 ctermbg=96
 			hi User2 guifg=#B16286 ctermfg=96 ctermbg=236 
 		else
 			hi User1 guibg=#505050 ctermfg=236 ctermbg=248
 			hi User2 guifg=#505050 ctermfg=248 ctermbg=236 
 		endif
+
+		let g:last_mode = new_mode
 	else
-		call s:set_hi('User1', '', g:olmos_statusline_bg)
-		call s:set_hi('User2', g:olmos_statusline_fg, '')
+		execute 'hi User1 guibg=' . g:statusline_bg
+		execute 'hi User2 guifg=' . g:statusline_fg
 	endif
 
 	return ''
@@ -75,17 +63,6 @@ function s:on_enter()
 endfun
 imap <expr> <CR> <SID>on_enter()
 
-function! s:toggle_statusline()
-	if &laststatus == 0 || &laststatus == 1
-		set laststatus=2
-		set noshowmode
-	else
-		set laststatus=0
-		set showmode
-	endif
-endfun
-command ToggleStatusline call s:toggle_statusline()
-
 function s:toggle_overlength()
 	if &colorcolumn == 0
 		set colorcolumn=80
@@ -93,10 +70,62 @@ function s:toggle_overlength()
 		set colorcolumn=0
 	endif
 endfun
-command ToggleOverLength call s:toggle_overlength()
+command ToggleOverlength call s:toggle_overlength()
+
+let g:indent_guides = 0
+function s:toggle_indent_guides()
+	if g:indent_guides
+		set listchars=tab:\ \ ,trail:·
+		let g:indent_guides = 0
+	else
+		set listchars=tab:\│\ ,trail:·
+		let g:indent_guides = 1
+	endif
+endfun
+command ToggleIndentGuides call s:toggle_indent_guides()
 
 function s:syn_group()
     let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfun
 command SyncGroup call s:syn_group()
+
+function s:start_buffer()
+    " Don't run if: we have commandline arguments, we don't have an empty
+    " buffer, if we've not invoked as vim or gvim, or if we'e start in insert mode
+    if argc() || line2byte('$') != -1 || v:progname !~? '^[-gmnq]\=vim\=x\=\%[\.exe]$' || &insertmode
+        return
+    endif
+
+    " Start a new buffer ...
+    enew
+
+    " ... and set some options for it
+    setlocal
+        \ bufhidden=wipe
+        \ buftype=nofile
+        \ nobuflisted
+        \ nocursorcolumn
+        \ nocursorline
+        \ nolist
+        \ nonumber
+        \ noswapfile
+        \ norelativenumber
+
+    " Now we can just write to the buffer, whatever you want.
+    call append('$', "")
+    for line in split(system('fortune -a'), '\n')
+        call append('$', '        ' . l:line)
+    endfor
+
+    " No modifications to this buffer
+    setlocal nomodifiable nomodified
+
+    " When we go to insert mode start a new buffer, and start insert
+    nnoremap <buffer><silent> e :enew<CR>
+    nnoremap <buffer><silent> i :enew <bar> startinsert<CR>
+    nnoremap <buffer><silent> o :enew <bar> startinsert<CR>
+endfun
+
+" Run after "doing all the startup stuff"
+autocmd VimEnter * call s:start_buffer()

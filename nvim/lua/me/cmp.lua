@@ -7,11 +7,33 @@ local function has_words_before()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local function border(hl_name)
+	return {
+		{ "╭", hl_name },
+		{ "─", hl_name },
+		{ "╮", hl_name },
+		{ "│", hl_name },
+		{ "╯", hl_name },
+		{ "─", hl_name },
+		{ "╰", hl_name },
+		{ "│", hl_name },
+	}
+end
+
 cmp.setup({
+	window = {
+		completion = {
+			border = border("CmpBorder"),
+			scrollbar = '┃',
+		},
+		documentation = {
+			border = border("CmpBorder"),
+			scrollbar = '┃',
+		}
+	},
 	snippet = {
-		-- REQUIRED - you must specify a snippet engine
 		expand = function(args)
-			require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+			require('luasnip').lsp_expand(args.body)
 		end,
 	},
 	mapping = {
@@ -62,42 +84,42 @@ cmp.setup({
 	},
 	formatting = {
 		format = lspkind.cmp_format({
-				mode = 'symbol',
-				symbol_map = {
-					Text = "",
-					Method = "",
-					Function = "",
-					Constructor = "",
-					Field = "ﰠ",
-					Variable = "",
-					Class = "ﴯ",
-					Interface = "",
-					Module = "",
-					Property = "ﰠ",
-					Unit = "塞",
-					Value = "",
-					Enum = "",
-					Keyword = "",
-					Snippet = "",
-					Color = "",
-					File = "",
-					Reference = "",
-					Folder = "",
-					EnumMember = "",
-					Constant = "",
-					Struct = "פּ",
-					Event = "",
-					Operator = "",
-					TypeParameter = ""
-				},
-				menu = ({
-						buffer = "Buf",
-						nvim_lsp = "LSP",
-						luasnip = "Snip",
-						nvim_lua = "Lua",
-						latex_symbols = "Latex",
-					})
-			})
+			mode = 'symbol',
+			symbol_map = {
+				Text = "",
+				Method = "",
+				Function = "",
+				Constructor = "",
+				Field = "ﰠ",
+				Variable = "",
+				Class = "ﴯ",
+				Interface = "",
+				Module = "",
+				Property = "ﰠ",
+				Unit = "塞",
+				Value = "",
+				Enum = "",
+				Keyword = "",
+				Snippet = "",
+				Color = "",
+				File = "",
+				Reference = "",
+				Folder = "",
+				EnumMember = "",
+				Constant = "",
+				Struct = "פּ",
+				Event = "",
+				Operator = "",
+				TypeParameter = ""
+			},
+			menu = {
+				buffer = "Buf",
+				nvim_lsp = "LSP",
+				luasnip = "Snip",
+				nvim_lua = "Lua",
+				latex_symbols = "Latex",
+			}
+		})
 	},
 })
 
